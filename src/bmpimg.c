@@ -39,12 +39,14 @@ void genbmpimg(struct bmpimg *img) {
     int hres = 1080;
     int vres = 1920;
 
+    // BMP Header
     fwrite(&sign1, sizeof(char), 1, file);          //B
     fwrite(&sign2, sizeof(char), 1, file);          //M
     fwrite(&(img->size), sizeof(int), 1, file);     //File size
     fwrite(&zero, sizeof(short), 1, file);          //reserved (0)
     fwrite(&zero, sizeof(short), 1, file);          //reserved (0)
     fwrite(&offset, sizeof(int), 1, file);          //offset (54)
+    // BMP Info
     fwrite(&bmpinfosize, sizeof(int), 1, file);     //bitmapinfo size (40)
     fwrite(&(img->width), sizeof(int), 1, file);    //width
     fwrite(&(img->height), sizeof(int), 1, file);   //height
@@ -61,7 +63,8 @@ void genbmpimg(struct bmpimg *img) {
     int black = 0;
 
     srand(time(NULL));
-
+    
+    // Writing random image
     for(int i = 0; i < img->height * img->width * 24; i++) {
         int r = rand() % 256;
         fwrite(&r, sizeof(char), 1, file);
